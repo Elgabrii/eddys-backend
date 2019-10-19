@@ -21,7 +21,11 @@ module.exports.http = {
   ****************************************************************************/
 
   middleware: {
-
+    // order:
+    // a: function(req, res, next) {
+    //   console.log('lala');
+    //   next();
+    // }
     /***************************************************************************
     *                                                                          *
     * The order in which middleware should be run for HTTP requests.           *
@@ -29,17 +33,21 @@ module.exports.http = {
     *                                                                          *
     ***************************************************************************/
 
-    // order: [
-    //   'cookieParser',
-    //   'session',
-    //   'bodyParser',
-    //   'compress',
-    //   'poweredBy',
-    //   'router',
-    //   'www',
-    //   'favicon',
-    // ],
-
+    order: [
+      'logger',
+      'cookieParser',
+      'session',
+      'bodyParser',
+      'compress',
+      'poweredBy',
+      'router',
+      'www',
+      'favicon',
+    ],
+    logger: function(req, res, next) {
+      console.log('METHOD:'+req.method,'URL:'+req.url);
+      next();
+    }
 
     /***************************************************************************
     *                                                                          *

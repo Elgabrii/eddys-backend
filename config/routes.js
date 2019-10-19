@@ -18,9 +18,11 @@ module.exports.routes = {
   * `assets` directory)                                                      *
   *                                                                          *
   ***************************************************************************/
-
   '/': { view: 'pages/homepage' },
-
+  'get /products': 'ProductsController.fetchProducts',
+  'get /products/:product_id': 'ProductsController.fetchProduct',
+  'post /products/searchProducts/': 'ProductsController.searchProducts',
+  'post /products': 'ProductsController.addProduct',
 
   /***************************************************************************
   *                                                                          *
