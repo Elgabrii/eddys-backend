@@ -38,12 +38,23 @@ module.exports = {
     res.send(products);
   },
   addProduct: async function(req, res) {
-    console.log(req.body);
     const toBeAddedProduct = await Products.create(req.body);
     res.status(201).json({
-      message: 'product created successfully',
+      message: 'product created successfully.',
     });
-
+  },
+  deleteProduct: async function(req, res) {
+    console.log(req.param('product_id'));
+    try {
+      const productToBeDeleted = await Products.destroyOne({
+        id: req.param('product_id')
+      });
+      res.status(200).json({
+        message: 'product deleted successfully.'
+      });
+    } catch(err) {
+      res.send(err);
+    }
   }
 };
 

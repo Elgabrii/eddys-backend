@@ -1,5 +1,5 @@
 /**
- * Products.js
+ * Messages.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -13,32 +13,15 @@ module.exports = {
       unique : true,
       columnName: '_id'
     },
-    nameEnglish: {
+    phoneNumber: {
+      type: 'number'
+    },
+    senderName: {
       type: 'string',
-      required: true
     },
-    nameArabic: {
+    body: {
       type: 'string',
-    },
-    descriptionEnglish: {
-      type: 'string'
-    },
-    descriptionArabic: {
-      type: 'string'
-    },
-    price: {
-      type: 'number',
-      required: true
-    },
-    quantity: {
-      type: 'number',
-      required: true
-    },
-    images: {
-      type: 'json',
-      columnType: 'array'
     }
-
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

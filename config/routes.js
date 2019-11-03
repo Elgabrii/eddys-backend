@@ -23,6 +23,12 @@ module.exports.routes = {
   'get /products/:product_id': 'ProductsController.fetchProduct',
   'post /products/searchProducts/': 'ProductsController.searchProducts',
   'post /products': 'ProductsController.addProduct',
+  'delete /products/deleteProduct/:product_id': 'ProductsController.deleteProduct',
+  /***************************************************************************/
+  'get /messages': 'MessagesController.fetchMessages',
+  'get /messages/:message_id': 'MessagesController.fetchMessage',
+  'post /messages': 'MessagesController.postMessage',
+  'delete /messages/deleteMessage/:message_id': 'MessagesController.deleteMessage'
 
   /***************************************************************************
   *                                                                          *
