@@ -22,6 +22,11 @@ module.exports = {
   register: async (req, res) => {
     req.body['role'] = 'normal';
     const responseBody = {};
+    if(!req.body.auth || !req.body.userProfile) {
+      return res.status(400).json({
+        message: 'Missing body'
+      });
+    }
     Auth.create(req.body.auth)
       .fetch()
       .then(user => {
