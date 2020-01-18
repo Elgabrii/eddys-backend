@@ -28,7 +28,15 @@ module.exports.routes = {
   'get /messages': 'MessagesController.fetchMessages',
   'get /messages/:message_id': 'MessagesController.fetchMessage',
   'post /messages': 'MessagesController.postMessage',
-  'delete /messages/deleteMessage/:message_id': 'MessagesController.deleteMessage'
+  'delete /messages/deleteMessage/:message_id': 'MessagesController.deleteMessage',
+
+  'get /users': 'UsersController.fetchUsers',
+  'get /users/:user_id': 'UsersController.fetchUser',
+  'post /users': 'UsersController.addUser',
+
+  'get /transactions': 'TransactionsController.fetchTransactions',
+  'post /auth/register': 'AuthController.register',
+  'post /auth/login': 'AuthController.login',
 
   /***************************************************************************
   *                                                                          *

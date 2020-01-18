@@ -10,6 +10,11 @@
 
 module.exports.policies = {
 
+  '*': 'isAuthenticated',
+  AuthController: {
+    register: true,
+    login: true,
+  }
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions, unless overridden.       *
