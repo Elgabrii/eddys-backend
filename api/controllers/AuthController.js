@@ -16,23 +16,22 @@ module.exports = {
   _config: {
     actions: true,
     shortcuts: true,
-    rest: true
+    rest: true,
   },
 
   register: async (req, res) => {
     req.body['role'] = 'normal';
     const responseBody = {};
-    if(!req.body.auth || !req.body.userProfile) {
+    if (!req.body.auth || !req.body.userProfile) {
       return res.status(400).json({
-        message: 'Missing body'
+        message: 'Missing body',
       });
     }
     Auth.create(req.body.auth)
       .fetch()
       .then(user => {
-        console.log('TCL: user', user);
         req.body.userProfile.auth = user.id;
-        return sails.helpers.jwTokenSign(user).catch( _jwtErr => {
+        return sails.helpers.jwTokenSign(user).catch(_jwtErr => {
           throw (500, 'Could not generate token', _jwtErr);
         });
       })
@@ -51,13 +50,13 @@ module.exports = {
             .then(_removeRes => {
               return res.status(400).json({
                 errorMessage: err.message,
-                errorName: err.name
+                errorName: err.name,
               });
             })
             .catch(removeErr => {
               return res.status(400).json({
                 errorName: removeErr.name,
-                errorMessage: removeErr.message
+                errorMessage: removeErr.message,
               });
             });
         } else {
@@ -69,13 +68,14 @@ module.exports = {
       });
   },
   login: async (req, res) => {
-    Auth.findOne({
-      email: req.body.email
+    return Auth.findOne({
+      email: req.body.email,
     })
       .then(user => {
         if (!user) {
           return res.status(404).json({
-            errorMessage: 'User account not found'
+            message: 'Failed to login',
+            errorMessage: 'User account not found',
           });
         }
         req.user = user.toJSON();
@@ -92,7 +92,7 @@ module.exports = {
       })
       .then(result => {
         return sails.helpers.jwTokenSign(result).catch(_jwtErr => {
-          throw new Error ('Could not generate token');
+          throw new Error('Could not generate token');
         });
       })
       .then(async token => {
@@ -106,5 +106,5 @@ module.exports = {
           errorMessage: err,
         });
       });
-  }
+  },
 };

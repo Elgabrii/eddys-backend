@@ -18,24 +18,24 @@ module.exports = {
       required: true,
       isEmail: true,
       isNotEmptyString: true,
-      allowNull: false
+      allowNull: false,
     },
     password: {
       type: 'string',
       required: true,
       minLength: 8,
       isNotEmptyString: true,
-      allowNull: false
+      allowNull: false,
     },
     role: {
       type: 'string',
-      isIn: ['super', 'admin', 'member', 'normal'],
-      defaultsTo: 'normal'
+      isIn: ['super', 'admin', 'staff', 'customer'],
+      defaultsTo: 'normal',
     },
     verified: {
       type: 'boolean',
-      defaultsTo: false
-    }
+      defaultsTo: false,
+    },
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝
@@ -52,10 +52,12 @@ module.exports = {
   beforeCreate: function(values, cb) {
     // Hash password
     bcrypt.hash(values.password, 10, (err, hash) => {
-      if(err) {return cb(err);}
+      if (err) {
+        return cb(err);
+      }
       values.password = hash;
       delete values.confirmation;
       cb();
     });
-  }
+  },
 };
