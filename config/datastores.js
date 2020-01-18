@@ -33,7 +33,7 @@ module.exports.datastores = {
   ***************************************************************************/
 
   default: {
-    adapter: require('sails-mongo'),
+    adapter: 'sails-mongo',
     url: 'localhost',
     port: 27017,
     database: 'sched-meal'

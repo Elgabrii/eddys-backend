@@ -1,5 +1,5 @@
 /**
- * Products.js
+ * Users.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -8,40 +8,13 @@
 module.exports = {
   primaryKey: 'id',
   attributes: {
-    id: {
-      type : 'string',
-      unique : true,
-      columnName: '_id'
-    },
-    category: {
-      model: 'category',
-      // required: true
-    },
-    nameEnglish: {
+    name: {
       type: 'string',
       required: true
     },
-    nameArabic: {
+    phoneNumber: {
       type: 'string',
     },
-    descriptionEnglish: {
-      type: 'string'
-    },
-    descriptionArabic: {
-      type: 'string'
-    },
-    price: {
-      type: 'number',
-      required: true
-    },
-    quantity: {
-      type: 'number',
-      required: true
-    },
-    images: {
-      type: 'json',
-      columnType: 'array'
-    }
 
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
@@ -56,8 +29,10 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-
+    auth: {
+      model: 'auth',
+    }
   },
-  datastore: 'default'
+
 };
 
