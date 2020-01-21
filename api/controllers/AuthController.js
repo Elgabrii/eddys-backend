@@ -72,12 +72,19 @@ module.exports = {
       email: req.body.email,
     })
       .then(user => {
+        console.log('TCL: user', user);
         if (!user) {
-          return res.status(404).json({
-            message: 'Failed to login',
-            errorMessage: 'User account not found',
-          });
+          try {
+            console.log('Eeeeh tyb');
+            return res.status(404).json({
+              message: 'Failed to login',
+              errorMessage: 'User account not found',
+            });
+          } catch (e) {
+            console.error(e);
+          }
         }
+        console.log('ezaaay hena');
         req.user = user.toJSON();
         // TODO: move comparing passwords to service
         return bcrypt

@@ -4,8 +4,10 @@
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
-
+const sendError = require('../utils/send-error');
+const makeError = require('../utils/make-error');
 module.exports = {
+  // TODO: handle error
   fetchProducts: async function(req, res) {
     try {
       const products = await Products.find().populateAll();
@@ -18,7 +20,7 @@ module.exports = {
     try {
       const product = await Products.findOne({
         id: req.param('product_id'),
-      });
+      }).populateAll();
       res.send(product);
     } catch (err) {
       res.send(err);
@@ -27,7 +29,6 @@ module.exports = {
   searchProducts: async function(req, res) {
     // db.stores.find( { $text: { $search: "java coffee shop" } } )
     const searchArray = req.body.searchKey.split(',');
-    console.log(searchArray, 'results');
     const fields = [
       'nameEnglish',
       'nameArabic',
@@ -43,7 +44,6 @@ module.exports = {
         }))
       );
     }, []);
-    console.log(orArr, 'orrArr');
     const products = await Products.find({
       or: orArr,
       // [
@@ -59,7 +59,7 @@ module.exports = {
     const toBeAddedProduct = await Products.create(req.body).fetch();
     return res.status(201).json({
       message: 'product created successfully.',
-      toBeAddedProduct,
+      product: toBeAddedProduct,
     });
   },
   deleteProduct: async function(req, res) {
@@ -74,5 +74,18 @@ module.exports = {
     } catch (err) {
       res.send(err);
     }
+  },
+  addImage: (req, res) => {
+    const { images, productID } = req.body;
+
+    Products.addToCollection(productID, 'images')
+      .members(images)
+      .then(newItems => {
+        return res.status(200).json({
+          message: 'Added images to product',
+          newItems,
+        });
+      })
+      .catch(err => sendError(makeError(400, err.message, err.name), res));
   },
 };
