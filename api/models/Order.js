@@ -14,7 +14,7 @@ module.exports = {
     },
     status: {
       type: 'string',
-      isIn: ['pending', 'completed', 'cacnelled'],
+      isIn: ['pending', 'completed', 'cancelled'],
     },
 
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
@@ -31,6 +31,9 @@ module.exports = {
     products: {
       collection: 'products',
       via: 'orders',
+    },
+    paymentOrder: {
+      model: 'paymentorder',
     },
     auth: {
       model: 'auth',
