@@ -115,6 +115,7 @@ module.exports = {
           .json({ token: token, user: req.user, userProfile });
       })
       .catch(err => {
+        console.error(err);
         return res.status(400).json({
           errorMessage: err,
         });
