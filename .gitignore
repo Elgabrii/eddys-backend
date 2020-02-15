@@ -132,3 +132,5 @@ lib-cov
 *.out
 *.pid
 false/
+
+assets/file_uploads/
