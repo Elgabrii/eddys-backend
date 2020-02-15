@@ -10,7 +10,6 @@
  */
 
 module.exports.bootstrap = async function() {
-
   // By convention, this is a good place to set up fake data during development.
   //
   // For example:
@@ -26,5 +25,42 @@ module.exports.bootstrap = async function() {
   //   // etc.
   // ]);
   // ```
+  console.log('Loading bootstrap...')
 
+  if (process.env.NODE_ENV === 'test') {
+
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('CREATING DATABASE INDEX BY HAND');
+    // USER MODEL
+    var db = Products.getDatastore().manager;
+    await db.collection(Products.tableName).createIndex({
+      nameEnglish: 'text',
+      descriptionEnglish: 'text'
+    });
+    // await db.collection(User.tableName).createIndex( { username: 1 }, {unique: true} );
+    // PANDA MODEL
+    // db = Panda.getDatastore().manager;
+    // await db.collection(Panda.tableName).createIndex( { name: 1 }, {unique: true} );
+  }
+
+  if(sails.config.environment === 'production') {
+    const oldUSers = await Auth.find();
+    if(oldUSers.length === 0) {
+      await Auth.createEach([{
+        email: 'magdy@gmail.com',
+        password: 'test1234',
+        role: 'admin'
+      }, {
+        email: 'mohabamr1@gmail.com',
+        password: 'test1234',
+        role: 'admin'
+      }]);
+    }
+  }
+
+  // await initializeDatabase() // custom DB initialization...
+
+  // return done();
 };
