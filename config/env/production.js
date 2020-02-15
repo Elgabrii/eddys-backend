@@ -38,6 +38,8 @@ module.exports = {
       port: '15434'
     }
   },
+  jwtSecret: 'aftermathdontknow',
+  jwtExpiry: '864000000',
 
 
 
