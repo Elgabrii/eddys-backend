@@ -27,6 +27,12 @@ module.exports = {
         message: 'Missing body',
       });
     }
+    const oldUSers = await Auth.find({email: req.body.email});
+    if(oldUSers.length > 0) {
+      return res.status(400).json({
+        message: 'Duplicate EMail',
+      });
+    }
     Auth.create(req.body.auth)
       .fetch()
       .then(user => {
@@ -105,6 +111,7 @@ module.exports = {
           .json({ token: token, user: req.user, userProfile });
       })
       .catch(err => {
+        console.error(err);
         return res.status(400).json({
           errorMessage: err,
         });

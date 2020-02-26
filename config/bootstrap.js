@@ -45,6 +45,21 @@ module.exports.bootstrap = async function() {
     // await db.collection(Panda.tableName).createIndex( { name: 1 }, {unique: true} );
   }
 
+  if(sails.config.environment === 'production') {
+    const oldUSers = await Auth.find();
+    if(oldUSers.length === 0) {
+      await Auth.createEach([{
+        email: 'magdy@gmail.com',
+        password: 'test1234',
+        role: 'admin'
+      }, {
+        email: 'mohabamr1@gmail.com',
+        password: 'test1234',
+        role: 'admin'
+      }]);
+    }
+  }
+
   // await initializeDatabase() // custom DB initialization...
 
   // return done();
