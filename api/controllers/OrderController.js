@@ -7,6 +7,7 @@
 const fetchQuery = require('../utils/fetch-query');
 const sendError = require('../utils/send-error');
 const makeError = require('../utils/make-error');
+const axios = require('axios');
 module.exports = {
   // TODO: add privacy access or admin
   find: (req, res) => {
@@ -33,32 +34,94 @@ module.exports = {
     orderBody.auth = req.currentUser.id;
     orderBody.status = 'pending';
     const productIDs = orderBody.products;
-    const paymentBody = req.body.payment;
     let responseBody = {};
+    const products = await Products.find({
+      id: {
+        in: productIDs,
+      },
+    });
+    const userProfile = await Users.findOne({
+      auth: req.currentUser.id,
+    });
+    // amount in cents
+    const totalAmount = products.reduce((acc, curr) => acc + curr.price, 0);
+    console.log('totalAmount', totalAmount);
     try {
-      const products = await Products.find({
-        id: {
-          in: productIDs,
-        },
-      });
-      const userProfile = await Users.findOne({
-        auth: req.currentUser.id,
-      });
-      const totalAmount = products.reduce((acc, curr) => acc + curr.price, 0);
-      responseBody.ordreObj = await Order.create(orderBody).fetch();
-      responseBody.paymentOrder = await PaymentOrder.create({
+      responseBody.orderObj = await Order.create({
+        ...orderBody,
         status: 'pending',
-        ...paymentBody,
         currency: 'EGP',
         completed: false,
         amount: totalAmount,
         auth: req.currentUser.id,
         user: userProfile.id,
-        orders: [responseBody.ordreObj.id],
-      });
+      }).fetch();
     } catch (err) {
       return sendError(makeError(400, err.message, err.name), res);
     }
+    console.log('responseBody.orderObj', responseBody.orderObj);
+
+    try {
+      // accept payment
+      if (responseBody.orderObj.method === 'we-accept') {
+        const acceptOrderResponse = await axios.post(
+          `${sails.config.ACCEPT_API_ROOT}/ecommerce/orders`,
+          {
+            auth_token: sails.config.ACCEPT_AUTH_TOKEN,
+            // TODO: ASK about delivery
+            delivery_needed: 'false',
+            merchant_id: sails.config.ACCEPT_MERCHANT_ID,
+            amount_cents: responseBody.orderObj.amount * 100,
+            currency: responseBody.orderObj.currency,
+            merchant_order_id: responseBody.orderObj.id,
+            items: [],
+          }
+        );
+        // console.log('acceptOrderResponse', acceptOrderResponse.data);
+
+        const paymentKeyResponse = await axios.post(
+          `${sails.config.ACCEPT_API_ROOT}/acceptance/payment_keys`,
+          {
+            auth_token: sails.config.ACCEPT_AUTH_TOKEN,
+            amount_cents: responseBody.orderObj.amount * 100,
+            expiration: 360000,
+            order_id: acceptOrderResponse.data.id,
+            currency: acceptOrderResponse.data.currency,
+            integration_id: sails.config.ACCEPT_INTEGRATION_ID,
+            billing_data: {
+              email: req.currentUser.email,
+              first_name: userProfile.name,
+              phone_number: userProfile.phoneNumber,
+              // TODO: dynamic billing fields
+              city: 'Cairo',
+              country: 'EG',
+              state: 'Cairo',
+              appartment: 10,
+              building: 1,
+              street: 'Test Street',
+              floor: 1,
+              apartment: 1,
+              last_name: 'Account',
+            },
+          }
+        );
+        responseBody.iframeURL =
+          'https://accept.paymobsolutions.com/api/acceptance/iframes/18072?payment_token=' +
+          paymentKeyResponse.data.token;
+        responseBody.paymentToken = paymentKeyResponse.data.token;
+      }
+    } catch (e) {
+      console.error(e.response.data);
+      console.log('ACCEPT::ERROR::', Object.keys(e.response));
+      if (e.code === 401) {
+        console.error('WE ACCEPT ERROR:: Authentication::', JSON.stringify(e));
+      } else {
+        // console.error(e);
+      }
+      // TODO: delete payment Order?
+      return sendError(makeError(400, e.message, e.name), res);
+    }
+
     return res.status(201).json({
       message: 'Created order successfully,\nPlease complete your payment.',
       ...responseBody,
@@ -113,6 +176,7 @@ module.exports = {
       let associations = await (action === 'add'
         ? Order.addToCollection(orderID, 'products').members(productIDs)
         : Order.removeFromCollection(orderID, 'products').members(productIDs));
+
       const newProductsPrice = products
         .map(x => x.price)
         .reduce((acc, curr) => acc + curr, 0);
@@ -120,8 +184,8 @@ module.exports = {
         payment.amount + newProductsPrice * (action === 'remove' ? -1 : 1);
 
       // update total price of payment
-      payment = await PaymentOrder.updateOne({
-        id: order.paymentOrder.id,
+      payment = await Order.updateOne({
+        id: order.id,
       }).set({ amount: newTotal });
 
       return res.status(200).json({
