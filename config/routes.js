@@ -41,6 +41,7 @@ module.exports.routes = {
   'post /auth/login': 'AuthController.login',
   'post /file/upload': 'UploadController.upload',
 
+  'POST /order/:id/products/:action': 'OrderController.editProducts',
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *

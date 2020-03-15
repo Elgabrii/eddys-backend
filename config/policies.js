@@ -9,19 +9,23 @@
  */
 
 module.exports.policies = {
-
   '*': 'isAuthenticated',
   AuthController: {
     register: true,
     login: true,
-  }
+  },
+  OrderController: {
+    '*': false,
+    create: 'isAuthenticated',
+    find: 'isAuthenticated',
+    editProducts: 'isAuthenticated',
+  },
   /***************************************************************************
-  *                                                                          *
-  * Default policy for all controllers and actions, unless overridden.       *
-  * (`true` allows public access)                                            *
-  *                                                                          *
-  ***************************************************************************/
+   *                                                                          *
+   * Default policy for all controllers and actions, unless overridden.       *
+   * (`true` allows public access)                                            *
+   *                                                                          *
+   ***************************************************************************/
 
   // '*': true,
-
 };
