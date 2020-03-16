@@ -19,6 +19,7 @@ module.exports.policies = {
     create: 'isAuthenticated',
     find: 'isAuthenticated',
     editProducts: 'isAuthenticated',
+    handlePaymobPayment: true
   },
   /***************************************************************************
    *                                                                          *

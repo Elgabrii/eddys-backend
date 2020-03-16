@@ -43,8 +43,15 @@ module.exports = {
     const userProfile = await Users.findOne({
       auth: req.currentUser.id,
     });
-    if(!userProfile) {
-      return sendError(makeError(403, 'You don\'t have a (customer) profile.\n You cannot make an order.', 'NotAuthoriezed'), res);
+    if (!userProfile) {
+      return sendError(
+        makeError(
+          403,
+          "You don't have a (customer) profile.\n You cannot make an order.",
+          'NotAuthoriezed'
+        ),
+        res
+      );
     }
     // amount in cents
     const totalAmount = products.reduce((acc, curr) => acc + curr.price, 0);
@@ -238,16 +245,31 @@ module.exports = {
     // https://accept.paymobsolutions.com/docs/guide/hmac_calculation/#hmac-calculation
     const responseBody = {};
     const orderID = req.body.obj.order.merchant_order_id;
-    if (req.body.obj.success && !req.body.obj.pending) {
+    if (!orderID) {
+      return sendError(makeError(404, 'Invalid Order ID.', 'NotFound'), res);
+    }
+    if (req.body.obj.success == 'true' && req.body.obj.pending == 'false') {
       responseBody.orderUpdateRes = await Order.updateOne({ id: orderID }).set({
         completed: true,
         paid_amount: req.body.obj.amount_cents / 100,
         status: 'completed',
       });
-    }
 
-    return res.status(200).json({
-      message: `Payment for order #${orderID} is completed.`,
-    });
+      console.log('responseBody.orderUpdateRes', responseBody.orderUpdateRes);
+      if (!responseBody.orderUpdateRes) {
+        return sendError(
+          makeError(404, 'Order is not found/updated.', 'NotFound'),
+          res
+        );
+      }
+      return res.status(200).json({
+        message: `Payment for order #${orderID} is completed.`,
+      });
+    } else {
+      return sendError(
+        makeError(400, 'Payment is not successful.', 'BadRequest'),
+        res
+      );
+    }
   },
 };
