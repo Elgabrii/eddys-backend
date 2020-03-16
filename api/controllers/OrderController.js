@@ -227,6 +227,13 @@ module.exports = {
   handlePaymobPayment: async (req, res) => {
     console.log('Handling paymob transaction');
     console.log(req.body);
+    console.log(
+      'Request sender::\n\n' +
+        req.connection.remoteAddress +
+        +'\n\n\nOP::' +
+        req.ip +
+        '\n\n\n-------------------------------'
+    );
     const requestType = req.body.type;
     if (requestType != 'TRANSACTION') {
       return sendError(
