@@ -23,6 +23,11 @@ module.exports.policies = {
   },
   ProductsController: {
     find: true,
+    findOne: true,
+  },
+  CategoryController: {
+    find: true,
+    findOne: true,
   },
   /***************************************************************************
    *                                                                          *
