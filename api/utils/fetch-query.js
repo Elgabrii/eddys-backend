@@ -1,4 +1,4 @@
-var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+const actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = (req, model) => {
   let selectQuery;
@@ -14,7 +14,6 @@ module.exports = (req, model) => {
     populateQuery = [];
   }
   const criteria = actionUtil.parseCriteria(req);
-  console.log('TCL: criteria', criteria);
   for (let index in criteria) {
     try {
       criteria[index] = JSON.parse(criteria[index]);

@@ -46,7 +46,6 @@ module.exports = {
         return Users.create(req.body.userProfile).fetch();
       })
       .then(userProfile => {
-        console.log('TCL: userProfile', userProfile);
         return res.status(201).json({ ...responseBody, userProfile });
       })
       // eslint-disable-next-line handle-callback-err
@@ -78,10 +77,8 @@ module.exports = {
       email: req.body.email,
     })
       .then(user => {
-        console.log('TCL: user', user);
         if (!user) {
           try {
-            console.log('Eeeeh tyb');
             return res.status(404).json({
               message: 'Failed to login',
               errorMessage: 'User account not found',
@@ -90,7 +87,6 @@ module.exports = {
             console.error(e);
           }
         }
-        console.log('ezaaay hena');
         req.user = user.toJSON();
         // TODO: move comparing passwords to service
         return bcrypt

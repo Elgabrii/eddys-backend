@@ -18,6 +18,7 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
   '/': { view: 'pages/homepage' },
+  'post /paymob_notification_callback' : 'OrderController.handlePaymobPayment',
   'get /products': 'ProductsController.fetchProducts',
   'get /products/:product_id': 'ProductsController.fetchProduct',
   'post /products/searchProducts/': 'ProductsController.searchProducts',
@@ -41,6 +42,7 @@ module.exports.routes = {
   'post /auth/login': 'AuthController.login',
   'post /file/upload': 'UploadController.upload',
 
+  'POST /order/:id/products/:action': 'OrderController.editProducts',
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *
