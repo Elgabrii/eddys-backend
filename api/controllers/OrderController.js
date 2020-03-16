@@ -56,6 +56,7 @@ module.exports = {
         currency: 'EGP',
         completed: false,
         amount: totalAmount,
+        paid_amount: 0,
         auth: req.currentUser.id,
         user: userProfile.id,
       }).fetch();
