@@ -43,6 +43,9 @@ module.exports = {
     const userProfile = await Users.findOne({
       auth: req.currentUser.id,
     });
+    if(!userProfile) {
+      return sendError(makeError(403, 'You don\'t have a (customer) profile.\n You cannot make an order.', 'NotAuthoriezed'), res);
+    }
     // amount in cents
     const totalAmount = products.reduce((acc, curr) => acc + curr.price, 0);
     console.log('totalAmount', totalAmount);

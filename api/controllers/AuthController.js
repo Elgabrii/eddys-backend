@@ -27,7 +27,7 @@ module.exports = {
         message: 'Missing body',
       });
     }
-    const oldUSers = await Auth.find({email: req.body.email});
+    const oldUSers = await Auth.find({email: req.body.auth.email});
     if(oldUSers.length > 0) {
       return res.status(400).json({
         message: 'Duplicate EMail',
