@@ -18,6 +18,7 @@ module.exports.routes = {
    *                                                                          *
    ***************************************************************************/
   '/': { view: 'pages/homepage' },
+  'post /paymob_notification_callback' : 'OrderController.handlePaymobPayment',
   'get /products': 'ProductsController.fetchProducts',
   'get /products/:product_id': 'ProductsController.fetchProduct',
   'post /products/searchProducts/': 'ProductsController.searchProducts',

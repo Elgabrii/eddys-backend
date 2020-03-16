@@ -21,6 +21,11 @@ module.exports = {
       required: true,
       columnType: 'decimal',
     },
+    paid_amount: {
+      type: 'number',
+      required: true,
+      columnType: 'decimal',
+    },
     completed: {
       type: 'boolean',
       defaultsTo: false,

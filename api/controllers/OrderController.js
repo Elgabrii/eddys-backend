@@ -64,10 +64,18 @@ module.exports = {
     try {
       // accept payment
       if (responseBody.orderObj.method === 'we-accept') {
+        // Fetch weaccept (gateway) auth token
+        const acceptAuthResponse = await axios.post(
+          `${sails.config.ACCEPT_API_ROOT}/auth/tokens`,
+          {
+            api_key: sails.config.ACCEPT_API_KEY,
+          }
+        );
+
         const acceptOrderResponse = await axios.post(
           `${sails.config.ACCEPT_API_ROOT}/ecommerce/orders`,
           {
-            auth_token: sails.config.ACCEPT_AUTH_TOKEN,
+            auth_token: acceptAuthResponse.data.token,
             // TODO: ASK about delivery
             delivery_needed: 'false',
             merchant_id: sails.config.ACCEPT_MERCHANT_ID,
@@ -82,7 +90,7 @@ module.exports = {
         const paymentKeyResponse = await axios.post(
           `${sails.config.ACCEPT_API_ROOT}/acceptance/payment_keys`,
           {
-            auth_token: sails.config.ACCEPT_AUTH_TOKEN,
+            auth_token: acceptAuthResponse.data.token,
             amount_cents: responseBody.orderObj.amount * 100,
             expiration: 360000,
             order_id: acceptOrderResponse.data.id,
@@ -204,5 +212,38 @@ module.exports = {
         res
       );
     }
+  },
+  handlePaymobPayment: async (req, res) => {
+    console.log('Handling paymob transaction');
+    console.log(req.body);
+    const requestType = req.body.type;
+    if (requestType != 'TRANSACTION') {
+      return sendError(
+        makeError(400, 'Cannot handle non transaction requests.', 'BadRequest'),
+        res
+      );
+    }
+
+    if (!req.body.obj.order) {
+      return sendError(
+        makeError(400, 'Missing body parameters.', 'BadRequest'),
+        res
+      );
+    }
+    // TODO: Calculate HMAC and compare to what's returned in query
+    // https://accept.paymobsolutions.com/docs/guide/hmac_calculation/#hmac-calculation
+    const responseBody = {};
+    const orderID = req.body.obj.order.merchant_order_id;
+    if (req.body.obj.success && !req.body.obj.pending) {
+      responseBody.orderUpdateRes = await Order.updateOne({ id: orderID }).set({
+        completed: true,
+        paid_amount: req.body.obj.amount_cents / 100,
+        status: 'completed',
+      });
+    }
+
+    return res.status(200).json({
+      message: `Payment for order #${orderID} is completed.`,
+    });
   },
 };

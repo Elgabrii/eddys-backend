@@ -1,18 +1,17 @@
-module.exports = async function(req, res, next) {
+module.exports = async function (req, res, next) {
   const headerToken = req.headers['x-access-token'];
   if (!headerToken) {
-    res.status(401).json({ message: 'Missing authentication token.' });
-    return;
+    return res.status(401).json({ message: 'Missing authentication token.' });
   }
 
   sails.helpers.jwTokenVerify(headerToken).switch({
-    error: function(err) {
+    error: function (err) {
       return res.serverError(err);
     },
-    invalid: function(err) {
-      res.status(401).json(err);
+    invalid: function (err) {
+      return res.status(401).json(err);
     },
-    success: function(user) {
+    success: function (user) {
       req.currentUser = user;
       return next();
     },
