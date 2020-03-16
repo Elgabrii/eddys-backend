@@ -1,5 +1,5 @@
 /**
- * CategoryController
+ * OrderController
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
@@ -33,13 +33,19 @@ module.exports = {
     const orderBody = req.body.order;
     orderBody.auth = req.currentUser.id;
     orderBody.status = 'pending';
-    const productIDs = orderBody.products;
+    const productIDs = orderBody.products.map(x => x.id);
+    console.log('productIDs', productIDs);
     let responseBody = {};
     const products = await Products.find({
       id: {
         in: productIDs,
       },
     });
+    const productsMap = products.reduce((acc, curr) => {
+      acc[curr.id] = curr;
+      return acc;
+    }, {});
+    console.log('productsMap', productsMap);
     const userProfile = await Users.findOne({
       auth: req.currentUser.id,
     });
@@ -53,9 +59,22 @@ module.exports = {
         res
       );
     }
-    // amount in cents
-    const totalAmount = products.reduce((acc, curr) => acc + curr.price, 0);
-    console.log('totalAmount', totalAmount);
+    let orderItems = orderBody.products
+      .map(x =>
+        Array(x.quantity).fill({
+          product: x.id,
+        })
+      )
+      .reduce((acc, val) => acc.concat(val), []);
+
+    console.log('orderItems', orderItems);
+
+    console.log('after flat:orderItems', orderItems);
+    const totalAmount = orderItems.reduce(
+      (acc, curr) => acc + productsMap[curr.product].price,
+      0
+    );
+    console.log('\n\n\ntotalAmount in EGP::', totalAmount);
     try {
       responseBody.orderObj = await Order.create({
         ...orderBody,
@@ -67,6 +86,15 @@ module.exports = {
         auth: req.currentUser.id,
         user: userProfile.id,
       }).fetch();
+      orderItems.forEach(orderItemObj => {
+        orderItemObj.order = responseBody.orderObj.id;
+      });
+      console.log('after injecting order:\norderItems', orderItems);
+      responseBody.items = await Promise.all(
+        orderItems.map(x =>
+          OrderItem.create({ order: x.order, product: x.product }).fetch()
+        )
+      );
     } catch (err) {
       return sendError(makeError(400, err.message, err.name), res);
     }
@@ -146,6 +174,8 @@ module.exports = {
       ...responseBody,
     });
   },
+  // FIXME: create new orderItem
+  // TODO: add remove_product action as well
   editProducts: async (req, res) => {
     const orderID = req.params.id;
     const action = req.params.action;
@@ -255,6 +285,20 @@ module.exports = {
     if (!orderID) {
       return sendError(makeError(404, 'Invalid Order ID.', 'NotFound'), res);
     }
+    console.log('Order to be updated::\n' + orderID + '\n\n\n');
+    console.log(
+      'Type of req.body.obj.success:\n\n' +
+        typeof req.body.obj.success +
+        '\n' +
+        req.body.obj.success
+    );
+
+    console.log(
+      'Type of req.body.obj.pending:\n\n' +
+        typeof req.body.obj.pending +
+        '\n' +
+        req.body.obj.pending
+    );
     if (req.body.obj.success && !req.body.obj.pending) {
       responseBody.orderUpdateRes = await Order.updateOne({ id: orderID }).set({
         completed: true,

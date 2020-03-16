@@ -54,9 +54,9 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-    orders: {
-      collection: 'order',
-      via: 'products',
+    orderitems: {
+      collection: 'orderitem',
+      via: 'product',
     },
   },
   datastore: 'default',
