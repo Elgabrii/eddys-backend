@@ -255,7 +255,7 @@ module.exports = {
     if (!orderID) {
       return sendError(makeError(404, 'Invalid Order ID.', 'NotFound'), res);
     }
-    if (req.body.obj.success == 'true' && req.body.obj.pending == 'false') {
+    if (req.body.obj.success && !req.body.obj.pending) {
       responseBody.orderUpdateRes = await Order.updateOne({ id: orderID }).set({
         completed: true,
         paid_amount: req.body.obj.amount_cents / 100,
