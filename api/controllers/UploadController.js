@@ -23,7 +23,7 @@ module.exports = {
         }
 
         const attachments = uploadedFiles.map(x => ({
-          link: '/file_uploads/'+x.fd.split('/')[4],
+          link: '/file_uploads/'+x.fd.split('/')[9],
           size: x.size,
           type: x.type,
           filename: x.filename,
