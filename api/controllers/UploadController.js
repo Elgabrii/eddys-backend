@@ -10,7 +10,7 @@ module.exports = {
     req.file('files').upload(
       {
         dirname: require('path').resolve(
-          sails.config.appPath,
+          // sails.config.appPath,
           sails.config.custom.uploadsPath
         ),
       },
