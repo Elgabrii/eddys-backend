@@ -10,7 +10,7 @@ module.exports = {
     req.file('files').upload(
       {
         dirname: require('path').resolve(
-          // sails.config.appPath,
+          sails.config.appPath,
           sails.config.custom.uploadsPath
         ),
       },
@@ -23,7 +23,7 @@ module.exports = {
         }
 
         const attachments = uploadedFiles.map(x => ({
-          link: x.fd,
+          link: '/file_uploads/'+x.fd.split('/')[4],
           size: x.size,
           type: x.type,
           filename: x.filename,
