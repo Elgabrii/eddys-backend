@@ -24,6 +24,7 @@ module.exports.policies = {
   ProductsController: {
     find: true,
     findOne: true,
+    '*': true,
   },
   CategoryController: {
     find: true,
