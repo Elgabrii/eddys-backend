@@ -38,6 +38,10 @@ module.exports = {
       type: 'number',
       required: true,
     },
+    availability: {
+      type: 'boolean',
+      required: true,
+    },
     images: {
       collection: 'image',
       via: 'products',
