@@ -6,15 +6,28 @@
  */
 const sendError = require('../utils/send-error');
 const makeError = require('../utils/make-error');
+const fetchQuery = require('../utils/fetch-query');
 module.exports = {
   // TODO: handle error
-  fetchProducts: async function(req, res) {
-    try {
-      const products = await Products.find().populateAll();
-      res.send(products);
-    } catch (err) {
-      res.send(err);
-    }
+  fetchProducts: (req, res) => {
+    let { dataQuery, countQuery } = fetchQuery(req, Products);
+    Promise.all([dataQuery, countQuery])
+    .then(responses => {
+      return res.status(200).json({
+        message: 'Fetched Products',
+        results: responses[0].map(x => ({
+          ...x,
+        })),
+        count: responses[1],
+      });
+    })
+    .catch(err => sendError(makeError(400, err.message, err.name), res));
+    // try {
+    //   const products = await Products.find().populateAll();
+    //   res.send(products);
+    // } catch (err) {
+    //   res.send(err);
+    // }
   },
   fetchProduct: async function(req, res) {
     try {
