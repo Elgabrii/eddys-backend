@@ -26,6 +26,9 @@ module.exports.policies = {
     findOne: true,
     '*': true,
   },
+  UploadController: {
+    '*': true,
+  },
   CategoryController: {
     find: true,
     findOne: true,
