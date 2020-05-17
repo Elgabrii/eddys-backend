@@ -46,13 +46,13 @@ module.exports = {
       defaultsTo: 'EG'
     },
     appartment: {
-      type: 'number'
+      type: 'string'
     },
     building: {
-      type: 'number'
+      type: 'string'
     },
     floor: {
-      type: 'number'
+      type: 'string'
     },
     street: {
       type: 'string'
