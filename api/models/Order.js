@@ -14,7 +14,7 @@ module.exports = {
     },
     status: {
       type: 'string',
-      isIn: ['pending', 'completed', 'cancelled', 'declined'],
+      isIn: ['pending', 'paid','completed', 'cancelled', 'declined'],
     },
     amount: {
       type: 'number',

@@ -302,9 +302,8 @@ module.exports = {
       responseBody.orderUpdateRes = await Order.updateOne({ id: orderID }).set({
         completed: true,
         paid_amount: req.body.obj.amount_cents / 100,
-        status: 'completed',
+        status: 'paid',
       });
-
       console.log('responseBody.orderUpdateRes', responseBody.orderUpdateRes);
       if (!responseBody.orderUpdateRes) {
         return sendError(
