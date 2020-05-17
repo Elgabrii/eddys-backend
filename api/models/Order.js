@@ -38,7 +38,31 @@ module.exports = {
       type: 'string',
       isIn: ['cash', 'we-accept'],
     },
-
+    city: {
+      type: 'string',
+    },
+    country: {
+      type: 'string',
+      defaultsTo: 'EG'
+    },
+    appartment: {
+      type: 'number'
+    },
+    building: {
+      type: 'number'
+    },
+    floor: {
+      type: 'number'
+    },
+    street: {
+      type: 'string'
+    },
+    landmark: {
+      type: 'string'
+    },
+    orderDeliveryTime: {
+      type: 'string'
+    },
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

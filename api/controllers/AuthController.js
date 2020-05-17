@@ -77,9 +77,9 @@ module.exports = {
       email: req.body.email,
     })
       .then(user => {
-        if (!user) {
+        if (!user || user===undefined) {
           try {
-            return res.status(404).json({
+            res.status(404).json({
               message: 'Failed to login',
               errorMessage: 'User account not found',
             });
@@ -100,6 +100,7 @@ module.exports = {
           });
       })
       .then(result => {
+        console.log()
         return sails.helpers.jwTokenSign(result).catch(_jwtErr => {
           throw new Error('Could not generate token');
         });
@@ -111,7 +112,7 @@ module.exports = {
           .json({ token: token, user: req.user, userProfile });
       })
       .catch(err => {
-        console.error(err);
+        // console.error(err);
         return res.status(400).json({
           errorMessage: err,
         });
