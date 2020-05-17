@@ -143,7 +143,7 @@ module.exports = {
               city: orderBody.city || 'Cairo',
               country: 'EG',
               state: 'Cairo',
-              appartment: orderBody.apartment || 1,
+              appartment: orderBody.appartment || 1,
               building: orderBody.building || 1,
               street: orderBody.street || '1',
               floor: orderBody.floor || 1,
