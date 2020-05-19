@@ -17,13 +17,16 @@ module.exports = {
       const productsIds = category.products.map(
         product => product.id
       )
-      const products = await Products.find({
+      let criteria = {
         id: {
           in: productsIds
         }
-      }).populateAll();
+      }
+      const products = await Products.find(criteria).populateAll();
+      const productsCount = await Products.count(criteria);
       return res.status(200).json({
-        products
+        products,
+        count: productsCount
       });
     }
     catch(err) {
