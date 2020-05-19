@@ -21,6 +21,7 @@ module.exports.routes = {
   'post /paymob_notification_callback' : 'OrderController.handlePaymobPayment',
   'get /products': 'ProductsController.fetchProducts',
   'get /products/:product_id': 'ProductsController.fetchProduct',
+  'get /category/:category_id': 'CategoryController.fetchCategory',
   'post /products/searchProducts/': 'ProductsController.searchProducts',
   'post /products/images/upload': 'ProductsController.addImage',
   'post /products': 'ProductsController.addProduct',

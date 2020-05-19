@@ -32,6 +32,8 @@ module.exports.policies = {
   CategoryController: {
     find: true,
     findOne: true,
+    fetchCategory: true,
+    create: true,
   },
   /***************************************************************************
    *                                                                          *
