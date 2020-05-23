@@ -61,7 +61,7 @@ module.exports = {
     }
     let orderItems = orderBody.products
       .map(x =>
-        Array(x.quantity).fill({
+        Array(parseInt(x.quantity)).fill({
           product: x.id,
         })
       )
