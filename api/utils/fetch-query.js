@@ -18,7 +18,7 @@ module.exports = (req, model) => {
     try {
       criteria[index] = JSON.parse(criteria[index]);
     } catch (error) {
-      console.error(error);
+      console.warn(error);
     }
   }
   let dataQuery = model

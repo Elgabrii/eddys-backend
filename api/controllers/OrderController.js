@@ -14,6 +14,17 @@ module.exports = {
     if (!req.currentUser.role === 'admin') {
       req.query.auth = req.currentUser.id;
     }
+    console.log(req.query.startDate, 'start');
+    console.log(req.query.endDate, 'endd');
+    if(req.query.startDate&&req.query.endDate)  {
+      req.query.createdAt = {
+        '<=': new Date(req.query.endDate),
+        '>=': new Date(req.query.startDate),
+      };
+      delete req.query.endDate;
+      delete req.query.startDate;
+      console.log(req.query.createdAt);
+    }
     let { dataQuery, countQuery } = fetchQuery(req, Order);
 
     Promise.all([dataQuery, countQuery])
