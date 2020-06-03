@@ -41,7 +41,9 @@ module.exports = {
   },
   searchProducts: async function(req, res) {
     // db.stores.find( { $text: { $search: "java coffee shop" } } )
-    const searchArray = req.body.searchKey.split(',');
+    const searchArray = req.body.searchKey.split(' ');
+    // console.log(searchArray,'searchArray')
+    // const searchArray2 = req.body.searchKey.split(' ').map(([firstChar,...rest])=>firstChar.toUpperCase()+rest.join("").toLowerCase()).join(" ")
     const fields = [
       'nameEnglish',
       'nameArabic',
@@ -54,9 +56,21 @@ module.exports = {
           [field]: {
             contains: searchWord,
           },
+          [field]: {
+            contains: [searchWord].map(([firstChar,...rest])=>firstChar.toUpperCase()+rest.join("").toLowerCase()).join(""),
+          },
         }))
       );
     }, []);
+    // const orArr2 = fields.reduce((accumlator, field) => {
+    //   return accumlator.concat(
+    //     searchArray.map(searchWord => ({
+    //       [field]: {
+    //         contains: searchWord.map(([firstChar,...rest])=>firstChar.toUpperCase()+rest.join("").toLowerCase()),
+    //       },
+    //     }))
+    //   );
+    // }, []);
     const products = await Products.find({
       or: orArr,
       // [
