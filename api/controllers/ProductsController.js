@@ -66,7 +66,7 @@ module.exports = {
       //   // {descriptionArabic: { contains:req.body['searcshKey'] }},
       // ]
     });
-    res.send(products);
+    res.send(products).populateAll('images');
   },
   addProduct: async function(req, res) {
     const toBeAddedProduct = await Products.create(req.body).fetch();
