@@ -52,7 +52,10 @@ module.exports = {
       return accumlator.concat(
         searchArray.map(searchWord => ({
           [field]: {
-            contains: searchWord,
+            contains: searchWord ,
+          },
+          [field]: {
+            contains: searchWord.toLowerCase() ,
           },
         }))
       );
@@ -65,7 +68,7 @@ module.exports = {
       //   {descriptionEnglish: { contains:req.body['searchKey'] }},
       //   // {descriptionArabic: { contains:req.body['searcshKey'] }},
       // ]
-    });
+    }).populate('images');
     res.send(products);
   },
   addProduct: async function(req, res) {
