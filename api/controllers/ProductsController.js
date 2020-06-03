@@ -65,8 +65,8 @@ module.exports = {
       //   {descriptionEnglish: { contains:req.body['searchKey'] }},
       //   // {descriptionArabic: { contains:req.body['searcshKey'] }},
       // ]
-    });
-    res.send(products).populate('images');
+    }).populate('images');
+    res.send(products);
   },
   addProduct: async function(req, res) {
     const toBeAddedProduct = await Products.create(req.body).fetch();
