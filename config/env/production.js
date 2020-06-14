@@ -43,7 +43,7 @@ module.exports = {
   // TODO: FIXME: change to real production keys
   ACCEPT_API_KEY:
     'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPamsyTWpnc0ltTnNZWE56SWpvaVRXVnlZMmhoYm5RaWZRLjNTaG4yZC1iMmVtZFhqVDZ0UWRqNVZsZzViclo3VlVXS05aaW8xZnY1TVVuYk12XzB6UlVhdnVDNDF6alYwMHlvSjdaWVZfRWxjUnFSQWVNdXpaakF3',
-  ACCEPT_MERCHANT_ID: 6561,
+  ACCEPT_MERCHANT_ID: 9628,
   ACCEPT_INTEGRATION_ID: 16784,
   ACCEPT_API_ROOT: 'https://accept.paymobsolutions.com/api',
   // END of WE ACCEPT payment variables
