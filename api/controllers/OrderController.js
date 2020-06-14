@@ -163,7 +163,7 @@ module.exports = {
           }
         );
         responseBody.iframeURL =
-          'https://accept.paymobsolutions.com/api/acceptance/iframes/18072?payment_token=' +
+          'https://accept.paymobsolutions.com/api/acceptance/iframes/27455?payment_token=' +
           paymentKeyResponse.data.token;
         responseBody.paymentToken = paymentKeyResponse.data.token;
       }
