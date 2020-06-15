@@ -14,6 +14,9 @@ module.exports.policies = {
     register: true,
     login: true,
   },
+  ZoneController: {
+    '*': ['isAuthenticated','isAdmin']
+  },
   OrderController: {
     '*': false,
     create: 'isAuthenticated',

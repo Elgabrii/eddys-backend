@@ -87,5 +87,8 @@ module.exports = {
     auth: {
       model: 'auth',
     },
+    zone: {
+      model: 'zone',
+    },
   },
 };
