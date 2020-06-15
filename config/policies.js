@@ -40,6 +40,9 @@ module.exports.policies = {
     fetchCategory: true,
     create: true,
   },
+  MessagesController: {
+    postMessage: true
+  }
   /***************************************************************************
    *                                                                          *
    * Default policy for all controllers and actions, unless overridden.       *
