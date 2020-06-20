@@ -85,6 +85,8 @@ module.exports = {
       (acc, curr) => acc + productsMap[curr.product].price,
       0
     );
+    //delivery fee.
+    totalAmount += 35
     console.log('\n\n\ntotalAmount in EGP::', totalAmount);
     try {
       responseBody.orderObj = await Order.create({
