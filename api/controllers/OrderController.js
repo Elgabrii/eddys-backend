@@ -81,7 +81,7 @@ module.exports = {
     console.log('orderItems', orderItems);
 
     console.log('after flat:orderItems', orderItems);
-    const totalAmount = orderItems.reduce(
+    let totalAmount = orderItems.reduce(
       (acc, curr) => acc + productsMap[curr.product].price,
       0
     );
