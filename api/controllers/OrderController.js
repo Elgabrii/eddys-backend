@@ -77,16 +77,21 @@ module.exports = {
         })
       )
       .reduce((acc, val) => acc.concat(val), []);
-
-    console.log('orderItems', orderItems);
-
+    if(orderItems.length===0){
+      return sendError(makeError(400, 'Basket is Empty', 'Error'), res);
+    }
+    console.log('orderItems First Timee', orderItems);
     console.log('after flat:orderItems', orderItems);
+    console.log(productsMap);
     let totalAmount = orderItems.reduce(
       (acc, curr) => acc + productsMap[curr.product].price,
       0
     );
     //delivery fee.
     totalAmount += 35
+    if (totalAmount<350) {
+      return sendError(makeError(400, 'Order has to exceed 350EGP.', 'Error'), res);
+    }
     console.log('\n\n\ntotalAmount in EGP::', totalAmount);
     try {
       responseBody.orderObj = await Order.create({

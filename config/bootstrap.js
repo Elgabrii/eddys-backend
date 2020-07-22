@@ -49,8 +49,8 @@ module.exports.bootstrap = async function() {
     const oldUSers = await Auth.find();
     if(oldUSers.length === 0) {
       await Auth.createEach([{
-        email: 'misho@gmail.com',
-        password: 'mishovlhospitality2020',
+        email: 'magdy@gmail.com',
+        password: 'test1234',
         role: 'admin'
       }, {
         email: 'mohabamr1@gmail.com',
