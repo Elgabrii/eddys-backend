@@ -11,10 +11,14 @@ module.exports = {
     name: {
       type: 'string',
     },
+    type: {
+      type: 'string',
+      isIn: ['normal', 'catering'],
+    },
     products: {
       collection: 'products',
       via: 'category'
-    }
+    },
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝

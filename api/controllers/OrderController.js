@@ -23,7 +23,8 @@ module.exports = {
       };
       delete req.query.endDate;
       delete req.query.startDate;
-      console.log(req.query.createdAt);
+      req.query.populate = true
+      // console.log(req.query.createdAt);
     }
     let { dataQuery, countQuery } = fetchQuery(req, Order);
 

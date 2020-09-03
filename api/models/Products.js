@@ -13,6 +13,10 @@ module.exports = {
       unique: true,
       columnName: '_id',
     },
+    type: {
+      type: 'string',
+      isIn: ['normal', 'catering'],
+    },
     category: {
       model: 'category',
       // required: true
@@ -31,10 +35,6 @@ module.exports = {
       type: 'string',
     },
     price: {
-      type: 'number',
-      required: true,
-    },
-    quantity: {
       type: 'number',
       required: true,
     },
