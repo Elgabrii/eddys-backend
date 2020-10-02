@@ -28,20 +28,28 @@ module.exports = {
    *                                                                         *
    **************************************************************************/
   datastores: {
-    default: {
+    default: 
+    // {
+    //   adapter: 'sails-mongo',
+    //   url: 'mongodb://eddys2:EddyS1!23@ds115434.mlab.com:15434/eddys_prod',
+    //   database: 'eddys_prod',
+    //   user: 'eddys2',
+    //   port: '15434',
+    // },
+    {
       adapter: 'sails-mongo',
-      url: 'mongodb://eddys2:EddyS1!23@ds115434.mlab.com:15434/eddys_prod',
-      database: 'eddys_prod',
-      user: 'eddys2',
-      port: '15434',
-    },
+      url: 'localhost',
+      port: 27017,
+      database: 'eddys_prod'
+    }
+
   },
   jwtSecret: 'aftermathdontknow',
   jwtExpiry: '864000000',
 
   // WE ACCEPT payment variables
   // TODO: FIXME: change to real production keys
-  ACCEPT_API_KEY:
+  ACCEPT_API_KEY: 
     'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPamsyTWpnc0ltTnNZWE56SWpvaVRXVnlZMmhoYm5RaWZRLjNTaG4yZC1iMmVtZFhqVDZ0UWRqNVZsZzViclo3VlVXS05aaW8xZnY1TVVuYk12XzB6UlVhdnVDNDF6alYwMHlvSjdaWVZfRWxjUnFSQWVNdXpaakF3',
   ACCEPT_MERCHANT_ID: 9628,
   ACCEPT_INTEGRATION_ID: 22556,
